@@ -15,15 +15,15 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       {showResults ? (
-        <h1 className="text-4xl mb-10">
+        <h1 className="mb-10 text-4xl">
           Your score is {Math.max(0, score)}/{questions.length}!
         </h1>
       ) : (
         <div className="flex flex-col items-center">
-          <h2 className="text-2xl font-black mt-3">
+          <h2 className="mt-3 text-2xl font-black">
             Question {currentQuestionIndex + 1}
           </h2>
-          <h3 className="text-lg mt-1 mb-2">{currentQuestion.prompt}</h3>
+          <h3 className="mb-2 mt-1 text-lg">{currentQuestion.prompt}</h3>
           <CheckboxGroup>
             {currentQuestion.options.map((answer: Option, index: number) => (
               <Checkbox
@@ -42,15 +42,16 @@ export default function Home() {
               </Checkbox>
             ))}
           </CheckboxGroup>
-          <div className="flex justify-center items-center gap-4 w-full mt-10">
+          <div className="mt-10 flex w-full items-center justify-center gap-4">
             <PreviousQuestionButton
+              questions={questions}
               currentQuestionIndex={currentQuestionIndex}
               setCurrentQuestionIndex={setCurrentQuestionIndex}
             />
             <NextQuestionButton
+              questions={questions}
               currentQuestionIndex={currentQuestionIndex}
               setCurrentQuestionIndex={setCurrentQuestionIndex}
-              questions={questions}
             />
             <SubmitQuestionsButton
               questions={questions}
@@ -90,7 +91,7 @@ const SubmitQuestionsButton = (props: SubmitQuestionsButtonProps) => {
 
         const isCorrect: boolean = isCorrectAnswer(
           question.answers,
-          option.value
+          option.value,
         );
         isCorrect ? score++ : (score -= 1 / 2);
       });
@@ -102,7 +103,7 @@ const SubmitQuestionsButton = (props: SubmitQuestionsButtonProps) => {
 
   return (
     <button
-      className="bg-blue-500 hover:bg-blue-700 text-white py-3 px-10 rounded"
+      className="rounded bg-blue-500 px-10 py-3 text-white hover:bg-blue-700"
       onClick={onClick}
     >
       Submit
@@ -114,13 +115,15 @@ const SubmitQuestionsButton = (props: SubmitQuestionsButtonProps) => {
  * Previous question button and props
  */
 interface PreviousQuestionButtonProps {
+  questions: Question[];
   currentQuestionIndex: number;
   setCurrentQuestionIndex: SetState<number>;
 }
 const PreviousQuestionButton = (props: PreviousQuestionButtonProps) => {
   return (
     <button
-      className="bg-blue-500 hover:bg-blue-700 text-white py-3 px-10 rounded"
+      disabled={props.currentQuestionIndex <= 0}
+      className="rounded bg-blue-500 px-10 py-3 text-white hover:bg-blue-700 disabled:opacity-50"
       onClick={() => {
         if (props.currentQuestionIndex > 0) {
           props.setCurrentQuestionIndex(props.currentQuestionIndex - 1);
@@ -136,14 +139,15 @@ const PreviousQuestionButton = (props: PreviousQuestionButtonProps) => {
  * Next question button and props
  */
 interface NextQuestionButtonProps {
+  questions: Question[];
   currentQuestionIndex: number;
   setCurrentQuestionIndex: SetState<number>;
-  questions: Question[];
 }
 const NextQuestionButton = (props: NextQuestionButtonProps) => {
   return (
     <button
-      className="bg-blue-500 hover:bg-blue-700 text-white py-3 px-10 rounded"
+      disabled={props.currentQuestionIndex >= props.questions.length - 1}
+      className="rounded bg-blue-500 px-10 py-3 text-white hover:bg-blue-700 disabled:opacity-50"
       onClick={() => {
         if (props.currentQuestionIndex < props.questions.length - 1) {
           props.setCurrentQuestionIndex(props.currentQuestionIndex + 1);
