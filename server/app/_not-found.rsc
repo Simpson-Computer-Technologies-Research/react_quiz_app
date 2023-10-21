@@ -1,6 +1,6 @@
 1:HL["/_next/static/media/c9a5bc6a7c948fb0-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 2:HL["/_next/static/css/b8df18d905296e19.css","style",{"crossOrigin":""}]
-0:["krJf2_0rt3EfKvpUbQr4F",[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],"$L3",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/b8df18d905296e19.css","precedence":"next","crossOrigin":""}]],"$L4"]]]]
+0:["0msWkI-ymIbx51eORPCZV",[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],"$L3",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/b8df18d905296e19.css","precedence":"next","crossOrigin":""}]],"$L4"]]]]
 5:I[6954,[],""]
 6:I[7264,[],""]
 4:[["$","meta","0",{"charSet":"utf-8"}],["$","title","1",{"children":"Quiz App"}],["$","meta","2",{"name":"description","content":"Quiz app"}],["$","meta","3",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","4",{"name":"next-size-adjust"}]]
