@@ -2,7 +2,7 @@
   "name": "quizapp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://simpson-computer-technologies-research.github.io/react_quiz_app/",
+  "homepage": "https://simpson-computer-technologies-research.github.io/react_quiz_app",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
