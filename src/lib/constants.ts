@@ -3,8 +3,8 @@ import { Question } from "./types";
 export const DEFAULT_QUESTIONS: Question[] = [
   {
     prompt: "What is the best programming language?",
-    answer: "typescript",
-    answers: [
+    answers: ["typescript"],
+    options: [
       {
         value: "typescript",
         checked: false,
@@ -29,8 +29,8 @@ export const DEFAULT_QUESTIONS: Question[] = [
   },
   {
     prompt: "What color is the sky",
-    answer: "blue",
-    answers: [
+    answers: ["blue"],
+    options: [
       {
         value: "blue",
         checked: false,
@@ -55,8 +55,8 @@ export const DEFAULT_QUESTIONS: Question[] = [
   },
   {
     prompt: "What is the best food?",
-    answer: "waffles",
-    answers: [
+    answers: ["waffles"],
+    options: [
       {
         value: "waffles",
         checked: false,

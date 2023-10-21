@@ -1,14 +1,14 @@
 "use client";
 
 import { DEFAULT_QUESTIONS } from "@/lib/constants";
-import { Answer, Question, SetState } from "@/lib/types";
+import { Option, Question, SetState } from "@/lib/types";
 import { Checkbox, CheckboxGroup } from "@nextui-org/checkbox";
 import { ChangeEvent, useState } from "react";
 
 export default function Home() {
   const [questions, setQuestions] = useState<Question[]>(DEFAULT_QUESTIONS);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const currentQuestion: Question = questions[currentQuestionIndex];
 
@@ -16,7 +16,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       {showResults ? (
         <h1 className="text-4xl mb-10">
-          You got {correctAnswers} out of {questions.length} correct!
+          Your score is {Math.max(0, score)}/{questions.length}!
         </h1>
       ) : (
         <div className="flex flex-col items-center">
@@ -25,7 +25,7 @@ export default function Home() {
           </h2>
           <h3 className="text-lg mt-1 mb-2">{currentQuestion.prompt}</h3>
           <CheckboxGroup>
-            {currentQuestion.answers.map((answer: Answer, index: number) => (
+            {currentQuestion.options.map((answer: Option, index: number) => (
               <Checkbox
                 size="lg"
                 key={answer.id}
@@ -33,7 +33,7 @@ export default function Home() {
                 checked={answer.checked}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => {
                   const newQuestions = [...questions];
-                  newQuestions[currentQuestionIndex].answers[index].checked =
+                  newQuestions[currentQuestionIndex].options[index].checked =
                     event.target.checked;
                   setQuestions(newQuestions);
                 }}
@@ -54,7 +54,7 @@ export default function Home() {
             />
             <SubmitQuestionsButton
               questions={questions}
-              setCorrectAnswers={setCorrectAnswers}
+              setScore={setScore}
               setShowResults={setShowResults}
             />
           </div>
@@ -69,27 +69,41 @@ export default function Home() {
  */
 interface SubmitQuestionsButtonProps {
   questions: Question[];
-  setCorrectAnswers: SetState<number>;
+  setScore: SetState<number>;
   setShowResults: SetState<boolean>;
 }
 const SubmitQuestionsButton = (props: SubmitQuestionsButtonProps) => {
+  const isCorrectAnswer = (answers: string[], option: string) => {
+    for (let i = 0; i < answers.length; i++) {
+      if (answers[i] === option) return true;
+    }
+
+    return false;
+  };
+
+  const onClick = () => {
+    let score: number = 0;
+
+    props.questions.forEach((question: Question) => {
+      question.options.forEach((option: Option) => {
+        if (!option.checked) return;
+
+        const isCorrect: boolean = isCorrectAnswer(
+          question.answers,
+          option.value
+        );
+        isCorrect ? score++ : (score -= 1 / 2);
+      });
+    });
+
+    props.setScore(score);
+    props.setShowResults(true);
+  };
+
   return (
     <button
       className="bg-blue-500 hover:bg-blue-700 text-white py-3 px-10 rounded"
-      onClick={() => {
-        let correctAnswers = 0;
-
-        props.questions.forEach((question: Question) => {
-          question.answers.forEach((answer: Answer) => {
-            if (answer.checked && answer.value === question.answer) {
-              correctAnswers++;
-            }
-          });
-        });
-
-        props.setCorrectAnswers(correctAnswers);
-        props.setShowResults(true);
-      }}
+      onClick={onClick}
     >
       Submit
     </button>
